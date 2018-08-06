@@ -1,0 +1,8 @@
+1. Download your favorite flavor of virtual machine. I prefer OracleBox.
+2. Give the guest machine maximum video memory, and enable 2D/3D acceleration where possible.
+3. Install Windows. I tested with 10, anything 7 or greater should work fine.
+4. Download and install Microsoft Visual C++ Redistributable 2015 x86 (32-bit version is important!).
+5. Download and install Microsoft .NET Framework 4.5.2.
+6. Run the Retro Early-Access installer. The game should start successfully.
+7. If you have mouse movement issues ingame, I recommend disabling Mouse Integration for your virtual machine and/or changing the input device to PS/2 mouse.
+
