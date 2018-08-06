@@ -1,0 +1,90 @@
+[size=18pt][b]Guide: How to play FusionFall on Linux[/b][/size]
+
+I'm guessing a few of you have a Linux system and either dual-boot a Windows installation or run a VM with Windows on it. Either way, it is certainly not convenient. This guide will show you the general steps to get the Unity Web Player running on your Linux system. Consequently, you will be able to run any unity content, not just fusionfall :D.
+
+[size=14pt][b]Installation[/b][/size]
+Pipelight is a wrapper for many windows-only plugins such as Silverlight and Unity. This guide will specifically be for Firefox, but Pipelight is able to run in many other browsers. These steps will walk you through installing Pipelight and getting it to work with FFL.
+
+[b]Step 1: Install the Pipelight package[/b]
+Since installing pipelight is distro-specific, please follow step one of the official guide by picking your system [url=http://pipelight.net/cms/installation.html]here[/url].
+
+[b]Step 2: Disable default plugins[/b]
+Normally, no plugins are enabled, however it is possible that silverlight was enabled during the install process. To be sure that all plugins are disabled, please run
+[code]pipelight-plugin --disable-all
+sudo pipelight-plugin --disable-all[/code]
+
+[b]Step 3: Update plugins[/b]
+This step verifies that you have the latest version of each plugin and scripts associated with them. This does not update pipelight itself, just the emulated plugins.
+[code]sudo pipelight-plugin --update[/code]
+[Note] You may have already done this depending on which system you have by following the official guides. This is here to ensure consistency.
+
+[b]Step 4: Enable Unity3D[/b]
+Now with a clean installation, we need to enable the Unity3D plugin, as that is the platform used by FusionFall. This will be user-specific, so you may need to run this multiple times if you have multiple users on your system.
+[code]pipelight-plugin --enable unity3d[/code]
+If there are any license prompts, accept them by typing [font=courier]y[/font].
+
+[b]Step 5: Test the installation[/b]
+The plugin should now be correctly installed and functional. Restart your browser, and view the plugin page (type [font=courier]about:plugins[/font] in the address bar). You should now see 'Unity Player' listed. If not, try the troubleshooting steps.
+
+[b]Step 6: Change your browser platform[/b]
+This is somewhat of a workaround to get FFL to load the unity player for us. We will change the platform advertised by Firefox to appear as if we are on a Windows machine. First, type [font=courier]about:config[/font] in the address bar. You will see a warning message. Modifying the wrong settings in this area can break your browser, so be careful. Acknowledge the warning, and you will see a long list of options. Right-click anywhere, and select [font=courier]New → String[/font]. Type [font=courier]general.platform.override[/font] as the preference name, and [font=courier]Win32[/font] as the value. You should now see the new preference listed.
+[Note] This is probably the most complicated step. It might help you to read a guide with pictures. The official site has one [url=http://pipelight.net/cms/installation-user-agent.html#section_1_2]here[/url].
+
+[b]Step 7: Enjoy![/b]
+You should now be able to run FusionFall Legacy!
+If you did not see unity in the plugins list, or the game page is blank, follow the troubleshooting steps below.
+
+[size=14pt][b]Additional Steps for Retro[/b][/size]
+FusionFall Retro requires the use of an older version of Unity Web Player. Follow these steps after following the main guide and performing any necessary troubleshooting. These steps are not necessary if you intend to play on FusionFall Legacy instead.
+
+[b]Step 1: Download the custom version of Unity[/b]
+Since the installer cannot (or should not) be ran on a Linux system, I have already extracted the necessary files for you. Download them from [url=https://mega.nz/#!2Z5FHDKD!57E3ECHiy1d3o92PqYRmgif8gXHsFXsjWNcUytbN_wQ]here[/url] (mega.nz). If you want to get these files yourself, simply run the installer from [url=http://www.fusionfallretro.com/downloads/webplayer/UnityWebPlayer.exe]here[/url] and copy the files located at [font=courier]C:\Users\<You>\AppData\LocalLow\Unity\WebPlayer[/font]
+
+[b]Step 2: Backup your current installation[/b]
+If you ever want to play Legacy, or any other unity content that uses newer versions, you will need your old installation.
+[code]cd ~/.wine-pipelight/drive_c/Program Files/Unity/
+mv WebPlayer WebPlayer.bak[/code]
+
+[b]Step 3: Copy the new Unity files[/b]
+The files you downloaded from Step need to be placed in the same location as the old version of Unity. This essentially causes pipelight to load any version of Unity we want, as long as the files are in the same place. Place the downloaded zip file in the [font=courier]~/.wine-pipelight/drive_c/Program Files/Unity/[/font] directory and run this command:
+[code]unzip unity-retro.zip[/code]
+[Note] If in Step 1, you instead chose to obtain the files manually, place those files in a new directory named [font=courier]WebPlayer[/font]
+
+[b]Step 4: Enjoy![/b]
+Now that you have the correct version of Unity installed, you can enjoy playing Retro on your not-so-retro operating system.
+
+[size=14pt][b]Testing your installation[/b][/size]
+Ideally, you can simply load the FusionFall game page as a test. If FusionFall is down or you want to use a separate testing option, you can find a demo that works for almost every version of Unity [url=http://randomationmedia.com/vehicletestweb.html]here[/url].
+
+[size=14pt][b]Troubleshooting[/b][/size]
+These steps can fix common issues. Find your issue (if listed) and follow the steps. Once that problem is fixed, it might uncover another problem. While these steps are mostly harmless, you should only follow a section if that problem applies to you.
+
+[b]Unity Player is not appearing in the plugins list[/b]
+[b]1:[/b] Copy this section somewhere, as you will need to close your browser during these steps.
+[b]2:[/b] Open the [font=courier]about:support[/font] page.
+[b]3:[/b] Click on [font=courier]Open Directory[/font] beside [font=courier]Profile Directory[/font].
+[b]4:[/b] Close Firefox.
+[b]5:[/b] Open [font=courier]pluginreg.dat[/font] with a text editor.
+[b]6:[/b] Remove all lines below [font=courier][INVALID][/font] and save the file (Only lines below, not the line itself).
+[b]7:[/b] Start Firefox. Unity Player should now be listed on the plugins page. If not, continue to Step 8.
+[b]8:[/b] Close Firefox.
+[b]9:[/b] Delete the [font=courier]~/.wine-pipelight[/font] directory.
+[b]10:[/b] Start Firefox.
+[b]11:[/b] Follow steps 2-7 again.
+
+[b]Some fonts do not render[/b] (Commonly the username/password fields)
+[b]1:[/b] Navigate to your system's font directory (most likely [font=courier]/usr/share/fonts/TTF[/font]).
+[b]2:[/b] Copy all files in that directory to [font=courier]~/.wine-pipelight/drive_c/windows/Fonts/[/font]
+[b]3:[/b] Restart Firefox / Restart system.
+[b]4:[/b] You may need to install a Microsoft Fonts package. Consult your distribution's wiki for information.
+
+[b]Plugin crashes after displaying the Unity logo and loading bar (only for systems with hybrid graphics)[/b]
+[b]1a:[/b] If you are running your browser using [font=courier]optirun[/font] or [font=courier]primusrun[/font], then you will have to run it normally.
+[b]1b:[/b] If you are running it normally, you need to run your browser on your discrete card using [font=courier]optirun[/font] or [font=courier]primusrun[/font].
+
+[b]Final Note[/b]
+If after following the relevant steps you are still unable to get FFL to work, use the numerous online resources and your favorite search engine to your advantage. As a Linux user, it is valuable to know how to troubleshoot your own system. I may be able to help if this guide is incorrect, but otherwise you are on your own.
+
+[size=14pt][b]Enjoy![/b][/size]
+I hope this guide has helped you to experience FFL on your desired OS!
+If you may have noticed, Pipelight can run many other plugins besides Unity. The full, official guide can be found [url=http://pipelight.net/cms/installation.html#section_2]here[/url].
