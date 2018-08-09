@@ -4,7 +4,7 @@
 
 ## Environment setup and variables.
 TEMP_DIR=/tmp/FusionFallRetro_Installer
-LAUNCHER_URL='https://cdn.fusionfalluniverse.com/launcher/ULInstaller_x86.exe'
+LAUNCHER_URL='https://cdn.fusionfalluniverse.com/launcher/ULInstaller.exe'
 LAUNCHER_DL_NAME="${LAUNCHER_URL##*/}"
 [ -z "$WINEPREFIX" ] && export WINEPREFIX=$HOME/.wine
 export WINEARCH=win32
@@ -12,6 +12,7 @@ export WINEDEBUG=-all
 
 rm -rf $TEMP_DIR
 mkdir -p $TEMP_DIR
+cd $TEMP_DIR
 
 ## Dependency checks
 echo '* Checking dependencies...'
@@ -44,7 +45,12 @@ fi
 echo '* Setting up wineprefix...'
 wineboot --init || { echo >&2 "! wineboot failed"; exit 1; }
 sleep 6  # Required to make sure wineboot finished its setup.
+# Download dxvk-tools and install VulkanSDK
+git clone 'https://gitlab.com/GloriousEggroll/dxvk-tools.git' $TEMP_DIR/dxvk-tools
+( cd $TEMP_DIR/dxvk-tools && VULKANSDK=1 ./installvulkan.sh ) || { echo >&2 "! VulkanSDK setup failed :("; exit 1; }
+# Install DXVK
 setup_dxvk32 || { echo >&2 "! DXVK setup failed :("; exit 1; }
+# Install Visual C++ Redistributable 2015
 winetricks -q vcrun2015 || { echo >&2 "! Library 'vcrun2015' failed to install :("; exit 1; }
 # winetricks -q corefonts || { echo "! Library 'corefonts' failed to install :("; exit 1; }
 # winetricks -q crypt32 || { echo "! Library 'crypt32' failed to install :("; exit 1; }
@@ -82,5 +88,6 @@ chmod +x $TEMP_DIR/fusionfall_universe.sh
 echo "* Launch script written to '$TEMP_DIR/fusionfall_universe.sh'"
 
 
+## Done!
 echo -e "**\n** Installation complete!\n**"
 exit 0
