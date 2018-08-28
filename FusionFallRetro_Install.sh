@@ -42,8 +42,7 @@ else
 fi
 
 ## Install libraries
-echo '* Setting up wineprefix...'
-echo ''
+echo -e '* Setting up wineprefix...\n'
 wineboot --init || { echo >&2 "! wineboot failed"; exit 1; }
 sleep 6  # Required to make sure wineboot finished its setup.
 winetricks -q vcrun2015 || { echo >&2 '! Library 'vcrun2015' failed to install :('; exit 1; }
@@ -54,11 +53,9 @@ winetricks -q d3dcompiler_43 || { echo >&2 '! Library 'd3dcompiler_43' failed to
 
 ## Run the installer
 winetricks win7
-echo ''
-echo '* Downloading FFR Installer...'
+echo -e '\n* Downloading FFR Installer...'
 wget -nv ${LAUNCHER_URL} -O ${TEMP_DIR}/$LAUNCHER_DL_NAME
-echo '* Running FFR Installer...'
-echo ''
+echo -e '* Running FFR Installer...\n'
 wine $TEMP_DIR/$LAUNCHER_DL_NAME
 echo ''
 
