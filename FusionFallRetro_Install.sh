@@ -1,12 +1,13 @@
 #!/bin/bash
 ## FusionFall Retro install script for Linux
+## Authors: Wolfizen, Stellarspace
 
 
 ## Environment setup and variables.
 TEMP_DIR=/tmp/FusionFallRetro_Installer
 LAUNCHER_URL='https://cdn.fusionfalluniverse.com/launcher/ULInstaller.exe'
 LAUNCHER_DL_NAME="${LAUNCHER_URL##*/}"
-[ -z "$WINEPREFIX" ] && export WINEPREFIX=$HOME/.wine
+[ -z "$WINEPREFIX" ] && export WINEPREFIX=$HOME/.wine_fusionfall
 export WINEARCH=win32
 export WINEDEBUG=-all
 
@@ -16,12 +17,11 @@ cd $TEMP_DIR
 
 ## Dependency checks
 echo '* Checking dependencies...'
-{ wine --version | grep -q "Staging"; } && echo 'wine staging OK' || { echo >&2 '! Staging version of wine required.'; exit 1; }
-{ command -v setup_dxvk32 >/dev/null 2>&1; } && echo 'DXVK OK' || { echo >&2 "! DXVK 32bit required but not installed. https://github.com/doitsujin/dxvk"; exit 1; }
-[ -e '/usr/lib32/libvulkan.so.1' ] && echo 'libvulkan OK' || { echo >&2 "! WARNING: '/usr/lib32/libvulkan.so.1' not found"; }
+{ command -v wine >/dev/null 2>&1; } && { wine --version | grep -q "Staging"; } && echo 'wine staging OK' || { echo >&2 "! wine-staging is required. Please install it via your distribution's package manager."; exit 1; }
+{ command -v winetricks >/dev/null 2>&1; } && echo 'winetricks OK' || { echo >&2 "! winetricks is required. Please install it via your distribution's package manager."; exit 1; }
 
 
-echo -e '**\n** Welcome to the FusionFall Retro Linux Installer!\n**'
+echo -e '**\n** Welcome to the FusionFall Retro Linux Installer!\n** Authors: Wolfizen, Stellarspace\n**'
 
 
 ## Check for clean Wine prefix.
@@ -29,7 +29,7 @@ if [ -e "$WINEPREFIX" ]; then
     echo '! WARNING: This installer must run on a CLEAN wineprefix. A non-empty prefix was detected.'
     echo '  If you want to handle this yourself, CTRL+C or type "N" at the next prompt.'
     read -p "DELETE the wineprefix located at '$WINEPREFIX'? [y/N] " -n 1 -r
-    echo
+    echo ''
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         rm -rf $WINEPREFIX || { echo >&2 '! rm failed'; exit 1; }
         echo '* wineprefix cleaned.'
@@ -43,25 +43,35 @@ fi
 
 ## Install libraries
 echo '* Setting up wineprefix...'
+echo ''
 wineboot --init || { echo >&2 "! wineboot failed"; exit 1; }
 sleep 6  # Required to make sure wineboot finished its setup.
-# Download dxvk-tools and install VulkanSDK
-git clone 'https://gitlab.com/GloriousEggroll/dxvk-tools.git' $TEMP_DIR/dxvk-tools
-( cd $TEMP_DIR/dxvk-tools && VULKANSDK=1 ./installvulkan.sh ) || { echo >&2 "! VulkanSDK setup failed :("; exit 1; }
-# Install DXVK
-setup_dxvk32 || { echo >&2 "! DXVK setup failed :("; exit 1; }
-# Install Visual C++ Redistributable 2015
-winetricks -q vcrun2015 || { echo >&2 "! Library 'vcrun2015' failed to install :("; exit 1; }
-# winetricks -q corefonts || { echo "! Library 'corefonts' failed to install :("; exit 1; }
-# winetricks -q crypt32 || { echo "! Library 'crypt32' failed to install :("; exit 1; }
+winetricks -q vcrun2015 || { echo >&2 '! Library 'vcrun2015' failed to install :('; exit 1; }
+winetricks -q vcrun2013 || { echo >&2 '! Library 'vcrun2013' failed to install :('; exit 1; }
+winetricks -q d3dx11_43 || { echo >&2 '! Library 'd3dx11_43' failed to install :('; exit 1; }
+winetricks -q d3dcompiler_43 || { echo >&2 '! Library 'd3dcompiler_43' failed to install :('; exit 1; }
 
 
 ## Run the installer
 winetricks win7
+echo ''
 echo '* Downloading FFR Installer...'
 wget -nv ${LAUNCHER_URL} -O ${TEMP_DIR}/$LAUNCHER_DL_NAME
 echo '* Running FFR Installer...'
+echo ''
 wine $TEMP_DIR/$LAUNCHER_DL_NAME
+echo ''
+
+## Fix Unity Web Player location
+WEBPLAYER_SRC=$WINEPREFIX/drive_c/users/$USER/Application\ Data/FusionFall\ Universe/Games/Retro/WebPlayer
+UNITY_LIVE=$WINEPREFIX/drive_c/users/$USER/AppData/LocalLow/Unity
+echo '* Fixing Unity Web Player location...'
+mkdir -p "$UNITY_LIVE"
+ln -s "$WEBPLAYER_SRC" "$UNITY_LIVE/WebPlayer" || { echo >&2 '! ln failed'; exit 1; }
+ln -s "$WEBPLAYER_SRC" "$UNITY_LIVE/Web Player" || { echo >&2 '! ln failed'; exit 1; }
+
+
+echo -e '**\n** Installation complete!\n**'
 
 
 ## Export desktop file and script for running FFR
@@ -85,9 +95,8 @@ cat > $TEMP_DIR/fusionfall_universe.sh <<- EOS
 	env WINEPREFIX="$WINEPREFIX" /usr/bin/wine C:\\\\Program\\ Files\\\\FusionFall\\ Universe\\\\UniverseLauncher.exe 
 EOS
 chmod +x $TEMP_DIR/fusionfall_universe.sh
-echo "* Launch script written to '$TEMP_DIR/fusionfall_universe.sh'"
+echo '* Launch script written to '$TEMP_DIR/fusionfall_universe.sh''
 
 
 ## Done!
-echo -e "**\n** Installation complete!\n**"
 exit 0

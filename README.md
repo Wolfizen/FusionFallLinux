@@ -11,5 +11,12 @@ This repo hosts my work on getting the FusionFall Universe releases to run on Li
 As of now, no launcher or runnable game has ever been released for Legacy.
 
 ## Retro
-The _first_ Retro preview worked on Linux (using Pipelight). I personally have not been able to get the subsequent iterations
-working. Try it yourself, I have posted my progress so far.
+I have developed an installer script that sets up the necessary environment for FusionFall Retro to run.
+It creates a wineprefix with the appropriate libraries, runs the FusionFall installer, and provides both a
+.sh and .desktop file to start the launcher.
+
+### Installing
+
+First, download and install the following packages: `wine-staging`, `winetricks`.  
+Then, run the installer: `$ ./FusionFallRetro_Install.sh`  
+Finally, use either the .desktop file or the .sh file (your preference!) to start the launcher.
