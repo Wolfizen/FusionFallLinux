@@ -20,3 +20,7 @@ It creates a wineprefix with the appropriate libraries, runs the FusionFall inst
 First, download and install the following packages: `wine-staging`, `winetricks`.  
 Then, run the installer: `$ ./FusionFallRetro_Install.sh`  
 Finally, use either the .desktop file or the .sh file (your preference!) to start the launcher.
+
+If you wish to modify the Wine insllation folder from the default, override `WINEPREFIX` before 
+running.  
+An example: `$ WINEPREFIX="$HOME/bin/FusionFall" ./FusionFallRetro_Install.sh`
