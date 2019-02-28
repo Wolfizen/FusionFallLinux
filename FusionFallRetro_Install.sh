@@ -1,6 +1,7 @@
 #!/bin/bash
 ## FusionFall Retro install script for Linux
-## Authors: Wolfizen, Stellarspace
+## Authors: Wolfizen
+## Contributors: Stellarspace
 
 
 ## Environment setup and variables.
@@ -53,19 +54,30 @@ winetricks -q d3dcompiler_43 || { echo >&2 '! Library 'd3dcompiler_43' failed to
 
 ## Run the installer
 winetricks win7
+cat <<- EOS
+! ATTENTION! In order for this game to install successfully, the launcher needs to be run a single time to download extra required files.
+
+  Steps:
+    * At the end of the following installer, check the box to "Run FusionFall Universe".
+    * Log in to your FusionFall Universe account.
+    * Press "Play Now" in the launcher.
+    * The game will start, and then exit with an error. This is expected.
+    * Close the launcher.
+EOS
 echo -e '\n* Downloading FFR Installer...'
 wget -nv ${LAUNCHER_URL} -O ${TEMP_DIR}/$LAUNCHER_DL_NAME
 echo -e '* Running FFR Installer...\n'
 wine $TEMP_DIR/$LAUNCHER_DL_NAME
-echo ''
+read -p 'Press ENTER when you have finished the steps above, or CTRL+C to abort: '
 
 ## Fix Unity Web Player location
-WEBPLAYER_SRC=$WINEPREFIX/drive_c/users/$USER/Application\ Data/FusionFall\ Universe/Games/Retro/WebPlayer
-UNITY_LIVE=$WINEPREFIX/drive_c/users/$USER/AppData/LocalLow/Unity
+WEBPLAYER_SRC="$WINEPREFIX/dosdevices/c:/users/$USER/Application Data/FusionFall Universe/Games/Retro/WebPlayer"
+UNITY_LIVE="$WINEPREFIX/dosdevices/c:/users/$USER/AppData/LocalLow/Unity"
 echo '* Fixing Unity Web Player location...'
+[ -e "$WEBPLAYER_SRC" ] || { echo >&2 '! WebPlayer directory missing. Did you follow the steps above?'; exit 1; }
+rm -rf "$UNITY_LIVE"
 mkdir -p "$UNITY_LIVE"
 ln -s "$WEBPLAYER_SRC" "$UNITY_LIVE/WebPlayer" || { echo >&2 '! ln failed'; exit 1; }
-ln -s "$WEBPLAYER_SRC" "$UNITY_LIVE/Web Player" || { echo >&2 '! ln failed'; exit 1; }
 
 
 echo -e '**\n** Installation complete!\n**'

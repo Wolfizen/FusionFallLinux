@@ -1,0 +1,78 @@
+name: FusionFall Retro
+game_slug: fusionfall-retro
+version: fusionfall-retro-installer-DEV
+slug: fusionfall-retro-installer
+runner: wine
+
+# Authors: Wolfizen
+# Contributors: Stellarspace
+
+script:
+  files:
+  - setup: https://cdn.fusionfalluniverse.com/launcher/ULInstaller.exe
+  game:
+    arch: win32
+    exe: $GAMEDIR/dosdevices/c:/Program Files/FusionFall Universe/UniverseLauncher.exe
+    prefix: $GAMEDIR
+    working_dir: $GAMEDIR/dosdevices/c:/Program Files/FusionFall Universe/
+  installer:
+  - task:
+      arch: win32
+      description: Creating 32-bit Wine prefix
+      name: create_prefix
+      prefix: $GAMEDIR
+  - task:
+      app: vcrun2015
+      description: Installing vcrun2015
+      name: winetricks
+      prefix: $GAMEDIR
+  - task:
+      app: vcrun2013
+      description: Installing vcrun2013
+      name: winetricks
+      prefix: $GAMEDIR
+  - task:
+      app: d3dx11_43
+      description: Installing d3dx11_43
+      name: winetricks
+      prefix: $GAMEDIR
+  - task:
+      app: d3dcompiler_43
+      description: Installing d3dcompiler_43
+      name: winetricks
+      prefix: $GAMEDIR
+  - task:
+      app: win7
+      description: Setting Wine to Windows 7
+      name: winetricks
+      prefix: $GAMEDIR
+  - input_menu:
+      description: |
+        ATTENTION! In order for this game to install successfully, the launcher needs to be run a single time to download extra required files.
+
+        Steps:
+          * At the end of the following installer, check the box to "Run FusionFall Universe".
+          * Log in to your FusionFall Universe account.
+          * Press "Play Now" in the launcher.
+          * The game will start, and then exit with an error. This is expected.
+          * Close the launcher.
+      options:
+      - y: I understand
+      preselect: y
+  - task:
+      description: Running FusionFall Retro Installer
+      executable: setup
+      name: wineexec
+      prefix: $GAMEDIR
+  - execute:
+      description: Fix Unity Web Player files
+      command: >
+        rm -r "$GAMEDIR/dosdevices/c:/users/$USER/AppData/LocalLow/Unity/WebPlayer" &&
+        ln -s "$GAMEDIR/dosdevices/c:/users/$USER/Application Data/FusionFall Universe/Games/Retro/WebPlayer"
+        "$GAMEDIR/dosdevices/c:/users/$USER/AppData/LocalLow/Unity/WebPlayer"
+  - task:
+      name: winekill
+      prefix: $GAMEDIR
+  wine:
+    version: tkg-unity-4.1-x86_64
+    esync: true
