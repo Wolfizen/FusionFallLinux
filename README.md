@@ -15,7 +15,7 @@ I have developed an installer script that sets up the necessary environment for 
 It creates a wineprefix with the appropriate libraries, runs the FusionFall installer, and provides both a
 .sh and .desktop file to start the launcher.
 
-### Installing
+### Installing via a shell script
 
 First, download and install the following packages: `wine-staging`, `winetricks`.  
 Then, run the installer: `$ ./FusionFallRetro_Install.sh`  
@@ -24,3 +24,11 @@ Finally, use either the .desktop file or the .sh file (your preference!) to star
 If you wish to modify the Wine insllation folder from the default, override `WINEPREFIX` before 
 running.  
 An example: `$ WINEPREFIX="$HOME/bin/FusionFall" ./FusionFallRetro_Install.sh`
+
+### Installing via Lutris
+
+Lutris is an open-source Linux game manager. FusionFall Retro has an entry in their database, you can select it and install from there OR you can use my script directly. I publish any change I make here to Lutris, but there may still be differences - Lutris is an open platform and anyone can suggest changes.
+
+To install via their database, first install the Lutris program, then open [FusionFall Retro](https://lutris.net/games/fusionfall-retro/) in their database and click "Install". It will open in Lutris and proceed to the installation.
+
+To install directly, save `Lutris_Installer.yaml` locally and run: `$ lutris -i Lutris_Installer.yaml`.
