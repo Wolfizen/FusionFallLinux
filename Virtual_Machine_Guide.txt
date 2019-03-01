@@ -1,8 +1,9 @@
-1. Download your favorite flavor of virtual machine. I prefer OracleBox.
-2. Give the guest machine maximum video memory, and enable 2D/3D acceleration where possible.
-3. Install Windows. I tested with 10, anything 7 or greater should work fine.
-4. Download and install Microsoft Visual C++ Redistributable 2015 x86 (32-bit version is important!).
-5. Download and install Microsoft .NET Framework 4.5.2.
-6. Run the Retro Early-Access installer. The game should start successfully.
-7. If you have mouse movement issues ingame, I recommend disabling Mouse Integration for your virtual machine and/or changing the input device to PS/2 mouse.
+Virtual Machines can run Windows games in Linux where other options do not work. FusionFall is not a demanding game and should run fine even on a low-power computer. I can run on max settings with my integrated Intel chip.
 
+1. Download your favorite flavor of virtual machine. I prefer OracleBox.
+2. Give the guest machine maximum video memory, and enable 2D/3D acceleration.
+3. Install Windows. I tested with 10, anything 7 or later will work.
+4. Download and install Microsoft Visual C++ Redistributable 2015 x86 AND x64.
+5. Download and install Microsoft .NET Framework 4.7.2.
+6. Run the installer. The launcher and game should start successfully.
+7. If you have mouse movement issues ingame, I recommend disabling Mouse Integration for your VM and/or changing the input device to PS/2 mouse.
