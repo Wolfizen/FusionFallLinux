@@ -17,29 +17,29 @@ script:
     working_dir: $GAMEDIR/dosdevices/c:/Program Files/FusionFall Universe/
   installer:
   - task:
+      name: create_prefix
       arch: win32
       description: Creating 32-bit Wine prefix
-      name: create_prefix
       prefix: $GAMEDIR
   - task:
+      name: winetricks
       app: vcrun2017
       description: Installing vcrun2017
-      name: winetricks
       prefix: $GAMEDIR
   - task:
+      name: winetricks
       app: d3dx11_43
       description: Installing d3dx11_43
-      name: winetricks
       prefix: $GAMEDIR
   - task:
+      name: winetricks
       app: d3dcompiler_47
       description: Installing d3dcompiler_47
-      name: winetricks
       prefix: $GAMEDIR
   - task:
+      name: winetricks
       app: win7
       description: Setting Wine to Windows 7
-      name: winetricks
       prefix: $GAMEDIR
   - input_menu:
       description: |
@@ -55,9 +55,9 @@ script:
       - y: I understand
       preselect: y
   - task:
-      description: Running FusionFall Retro Installer
-      executable: setup
       name: wineexec
+      executable: setup
+      description: Running FusionFall Retro Installer
       prefix: $GAMEDIR
   - execute:
       description: Fix Unity Web Player files

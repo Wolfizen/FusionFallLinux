@@ -1,3 +1,6 @@
+*** AUTHOR'S NOTE: This is a very old guide for when FusionFall still ran with Silverlight in a browser. It is made available
+for historical purposes only.
+
 [size=18pt][b]Guide: How to play FusionFall on Linux[/b][/size]
 
 I'm guessing a few of you have a Linux system and either dual-boot a Windows installation or run a VM with Windows on it. Either way, it is certainly not convenient. This guide will show you the general steps to get the Unity Web Player running on your Linux system. Consequently, you will be able to run any unity content, not just fusionfall :D.
