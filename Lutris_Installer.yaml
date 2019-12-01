@@ -22,13 +22,8 @@ script:
       name: create_prefix
       prefix: $GAMEDIR
   - task:
-      app: vcrun2015
-      description: Installing vcrun2015
-      name: winetricks
-      prefix: $GAMEDIR
-  - task:
-      app: vcrun2013
-      description: Installing vcrun2013
+      app: vcrun2017
+      description: Installing vcrun2017
       name: winetricks
       prefix: $GAMEDIR
   - task:
@@ -37,8 +32,8 @@ script:
       name: winetricks
       prefix: $GAMEDIR
   - task:
-      app: d3dcompiler_43
-      description: Installing d3dcompiler_43
+      app: d3dcompiler_47
+      description: Installing d3dcompiler_47
       name: winetricks
       prefix: $GAMEDIR
   - task:
@@ -74,5 +69,7 @@ script:
       name: winekill
       prefix: $GAMEDIR
   wine:
-    version: tkg-unity-4.1-x86_64
+    version: lutris-4.20-x86_64
+#    version: tkg-unity-4.5-x86_64
+    dxvk: true
     esync: true

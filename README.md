@@ -17,13 +17,13 @@ It creates a wineprefix with the appropriate libraries, runs the FusionFall inst
 
 ### Installing via a shell script
 
-First, download and install the following packages: `wine-staging`, `winetricks`.  
+First, download and install the following packages: `wine-staging`, `winetricks`, and optionally `dxvk` plus its Vulkan dependencies.  
 Then, run the installer: `$ ./FusionFallRetro_Install.sh`  
 Finally, use either the .desktop file or the .sh file (your preference!) to start the launcher.
 
-If you wish to modify the Wine insllation folder from the default, override `WINEPREFIX` before 
-running.  
-An example: `$ WINEPREFIX="$HOME/bin/FusionFall" ./FusionFallRetro_Install.sh`
+I have found that this game runs best with [DXVK](https://github.com/doitsujin/dxvk) installed. The script will report the status of DXVK and enable it automatically if detected. One can disable automatic installation by passing `-dxvk` as an argument, or force installation with `+dxvk`.
+
+If you wish to modify the Wine installation folder from the default, override the `WINEPREFIX` environment variable before running. An example: `$ WINEPREFIX="$HOME/bin/FusionFall" ./FusionFallRetro_Install.sh`
 
 ### Installing via Lutris
 
@@ -32,3 +32,9 @@ Lutris is an open-source Linux game manager. FusionFall Retro has an entry in th
 To install via their database, first install the Lutris program, then open [FusionFall Retro](https://lutris.net/games/fusionfall-retro/) in their database and click "Install". It will open in Lutris and proceed to the installation.
 
 To install directly, save `Lutris_Installer.yaml` locally and run: `$ lutris -i Lutris_Installer.yaml`.
+
+### Known Problems
+
+If the game is started with a resolution of more than 1920*1080px, some fonts might fail to load properly. To fix this, un-maximize the game during the Dexlabs loading screen, then bring it back to your preferred resolution once the game has finished loading and the world is visible.
+
+When running the game without DXVK, several "Unexpected Error" popups may appear during game startup and loading. These do not prevent the game from running, and will not appear once the game has completed loading.
